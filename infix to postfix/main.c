@@ -3,7 +3,9 @@
 #include <string.h>
 #include <math.h>
 #include "Stack.h"
-#define StackEntry char
+#define NUM 0
+#define OP 1
+#define StackEntry ElementType
 
 
 
@@ -36,11 +38,12 @@ int Power(char symbol)
 
 void IntoPostfix()
 {
-    char popped ,Top,check;
+    ElementType e,popped,check,Top;
+    popped.info.operands;
     for (int i = 0; i < strlen(infix); i++)
     {
-        check = infix[i];
-        switch (check)
+        check.info.operands = infix[i];
+        switch (infix[i])
         {
         case '(':
             Push(check,&Infix);
@@ -48,7 +51,7 @@ void IntoPostfix()
 
         case ')':
             Pop(&popped,&Infix);
-            while (popped != '(')
+            while ( popped.info.operands != '(')
             {
                 Push(popped,&Postfix);
                 Pop(&popped,&Infix);
@@ -61,10 +64,10 @@ void IntoPostfix()
         case '+':
         case '-':
             StackTop(&Top,&Infix);
-            while (!StackEmpty(&Infix) && Power(Top) >= Power(check))
+            while (!StackEmpty(&Infix) && Power(Top.info.operands) >= Power(check.info.operands))
             {
                 Pop(&popped,&Infix);
-                Push(popped,&postfix);
+                Push(popped,&Postfix);
                 StackTop(&Top,&Infix);
             }
             Push(check,&Infix);
@@ -87,7 +90,7 @@ void IntoPostfix()
     for (int i = StackSize(&Postfix)-1 ; i >=0; i--)
     {
         Pop(&popped,&Postfix);
-        postfix[i]=popped;
+        postfix[i]=popped.info.operands;
     }
     printf("The PostFix expression is :: ");
      for (int i = 0; i < strlen(postfix); i++)
@@ -97,62 +100,71 @@ void IntoPostfix()
     printf("\n");
 }
 
-
-long int Calculate()
+double Calculate()
 {
-    char a,b;
-    char Popped;
+    
+    ElementType Popped, toint,a,b,result;
+    Popped.info.numbers;
+
     for (int i = 0; i < strlen(postfix); i++)
     {
         if(postfix[i] >= '0' && postfix[i] <= '9')
         {
-            Push(postfix[i],&stack);
+            toint.info.numbers =(postfix[i] - '0');
+            Push(toint,&stack);
         }
         else
         {
            Pop(&a,&stack);
+           a.info.numbers;
            Pop(&b,&stack);
-           a = a - '0';
-           b = b - '0';
+           // a = a - '0';
+           // b = b - '0';
+           b.info.numbers;
            switch (postfix[i])
            {
               case '+':
-                 Push((b+a),&stack);
+                result.info.numbers = (b.info.numbers + a.info.numbers);
+                 Push(result,&stack);
                  break;
 
               case '-':
-                 Push((b-a),&stack);
+                 result.info.numbers  = (b.info.numbers - a.info.numbers);
+                 Push(result,&stack);
                  break;
 
               case '*':
-                 Push((b*a),&stack);
+                 result.info.numbers  = (b.info.numbers * a.info.numbers);
+                 Push(result,&stack);
                  break;
 
               case '/':
-                 Push((b/a),&stack);
+                 result.info.numbers  = (b.info.numbers + a.info.numbers);
+                 Push(result,&stack);
                  break;
 
-              case '^':
-                 Push(pow(b,a),&stack);
+             case '^':
+                 result.info.numbers  = pow(b.info.numbers,a.info.numbers);
+                 Push(result,&stack);
                  break;
            }
         }
     }
 
     Pop(&Popped,&stack);
-    return Popped;
+    return Popped.info.numbers;
 
 }
 
 int main()
 {
-    long int result;
+    double result;
      printf("Enter the expression\n");
      gets(infix);
 
      IntoPostfix();
      result = Calculate();
-     printf("the evaluation of postfix is :: %ld",result);
+     printf("the evaluation of postfix is :: %0.2f",result);
 
 
     return 0;
