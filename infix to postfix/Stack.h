@@ -9,7 +9,6 @@
 
 typedef struct elementtype
 {
-    short int etype;
     union
     {
         double numbers;
