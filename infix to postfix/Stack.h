@@ -3,8 +3,21 @@
 
 #ifndef _STACK_H
 #define _STACK_H
-#define StackEntry char
+#define StackEntry ElementType
 #define MaxStack 100
+
+
+typedef struct elementtype
+{
+    short int etype;
+    union
+    {
+        double numbers;
+        char operands;
+
+    }info;
+}ElementType;
+
 
 typedef struct stack
 {
