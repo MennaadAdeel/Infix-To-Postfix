@@ -3,8 +3,6 @@
 #include <string.h>
 #include <math.h>
 #include "Stack.h"
-#define NUM 0
-#define OP 1
 #define StackEntry ElementType
 
 
