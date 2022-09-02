@@ -66,3 +66,4 @@ void TraverseStack(Stack *ps ,void(*pe)(StackEntry))
         (*pe)(ps->entry[i-1]);
     }
 }
+
